@@ -32,15 +32,22 @@ if (!project) {
     </div>
 
     {project.images.length > 0 && (
-      <div class="project__gallery">
-        {project.images.map((src) => (
-          <a href={src} target="_blank" rel="noreferrer" class="project__photo">
+      <div class="project__gallery" data-gallery>
+        {project.images.map((src, i) => (
+          <button type="button" class="project__photo" data-index={i}>
             <img src={src} alt="" loading="lazy" />
-          </a>
+          </button>
         ))}
       </div>
     )}
   </article>
+
+  <div class="lightbox" data-lightbox>
+    <button type="button" class="lightbox__close" data-lightbox-close aria-label="Close">&times;</button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="Previous">&larr;</button>
+    <img class="lightbox__image" data-lightbox-image alt="" />
+    <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="Next">&rarr;</button>
+  </div>
 
   <Footer />
 </BaseLayout>
@@ -92,6 +99,14 @@ if (!project) {
     gap: 5px;
     padding: 0 var(--gutter) 4rem;
   }
+  .project__photo {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
   .project__photo img {
     width: 100%;
     height: clamp(220px, 30vw, 340px);
@@ -112,4 +127,107 @@ if (!project) {
       grid-template-columns: 1fr;
     }
   }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 10, 8, 0.92);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s;
+  }
+  .lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox__image {
+    max-width: min(90vw, 1100px);
+    max-height: 86vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .lightbox__close {
+    position: absolute;
+    top: 1.25rem;
+    right: clamp(1.25rem, 4vw, 2.5rem);
+    font-size: 2.25rem;
+    line-height: 1;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.75rem;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+  }
+  .lightbox__nav--prev {
+    left: clamp(0.5rem, 3vw, 2rem);
+  }
+  .lightbox__nav--next {
+    right: clamp(0.5rem, 3vw, 2rem);
+  }
 </style>
+
+<script>
+  const galleries = document.querySelectorAll<HTMLElement>("[data-gallery]");
+
+  galleries.forEach((gallery) => {
+    const photos = [...gallery.querySelectorAll<HTMLButtonElement>(".project__photo")];
+    const srcs = photos.map((p) => p.querySelector("img")!.src);
+
+    const lightbox = document.querySelector<HTMLElement>("[data-lightbox]");
+    const lightboxImage = lightbox?.querySelector<HTMLImageElement>("[data-lightbox-image]");
+    let current = 0;
+
+    const show = (i: number) => {
+      current = (i + srcs.length) % srcs.length;
+      if (lightboxImage) lightboxImage.src = srcs[current];
+    };
+
+    const open = (i: number) => {
+      show(i);
+      lightbox?.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    };
+
+    const close = () => {
+      lightbox?.classList.remove("is-open");
+      document.body.style.overflow = "";
+    };
+
+    photos.forEach((photo, i) => {
+      photo.addEventListener("click", () => open(i));
+    });
+
+    lightbox?.querySelector("[data-lightbox-close]")?.addEventListener("click", close);
+    lightbox?.querySelector("[data-lightbox-prev]")?.addEventListener("click", () => show(current - 1));
+    lightbox?.querySelector("[data-lightbox-next]")?.addEventListener("click", () => show(current + 1));
+
+    lightbox?.addEventListener("click", (e) => {
+      if (e.target === lightbox) close();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (!lightbox?.classList.contains("is-open")) return;
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") show(current - 1);
+      if (e.key === "ArrowRight") show(current + 1);
+    });
+  });
+</script>
