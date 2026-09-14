@@ -1,0 +1,115 @@
+---
+import { getProjects, getProjectBySlug } from "../../lib/wordpress";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { slug: project.slug } }));
+}
+
+const { slug } = Astro.params;
+const project = await getProjectBySlug(slug!);
+
+if (!project) {
+  return Astro.redirect("/portfolio");
+}
+---
+
+<BaseLayout title={`${project.title} — Neda Decorations`} description={project.excerpt || project.title}>
+  <Nav dark />
+
+  <article class="project">
+    <div class="project__hero">
+      <img src={project.coverImage} alt="" role="presentation" />
+    </div>
+
+    <div class="project__body wrap">
+      <a href="/portfolio" class="project__back">&larr; Back to portfolio</a>
+      <h1 class="project__title">{project.title}</h1>
+      {project.description && <div class="project__description" set:html={project.description} />}
+    </div>
+
+    {project.images.length > 0 && (
+      <div class="project__gallery">
+        {project.images.map((src) => (
+          <a href={src} target="_blank" rel="noreferrer" class="project__photo">
+            <img src={src} alt="" loading="lazy" />
+          </a>
+        ))}
+      </div>
+    )}
+  </article>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .project__hero {
+    margin-top: 4.5rem;
+  }
+  .project__hero img {
+    width: 100%;
+    height: clamp(280px, 46vw, 460px);
+    object-fit: cover;
+  }
+
+  .project__body {
+    padding: 2.5rem var(--gutter) 2.5rem;
+  }
+
+  .project__back {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+    margin-bottom: 2rem;
+  }
+  .project__back:hover {
+    color: var(--color-accent);
+  }
+
+  .project__title {
+    font-size: clamp(2rem, 6vw, 3rem);
+    text-transform: none;
+    margin-bottom: 1.25rem;
+  }
+
+  .project__description {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-ink);
+    max-width: 65ch;
+  }
+  .project__description :global(p) {
+    margin-bottom: 1.25rem;
+  }
+
+  .project__gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    padding: 0 var(--gutter) 4rem;
+  }
+  .project__photo img {
+    width: 100%;
+    height: clamp(220px, 30vw, 340px);
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+  .project__photo:hover img {
+    opacity: 0.85;
+  }
+
+  @media (max-width: 720px) {
+    .project__gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .project__gallery {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

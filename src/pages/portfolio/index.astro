@@ -1,0 +1,37 @@
+---
+import { getProjects } from "../../lib/wordpress";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import PortfolioGrid from "../../components/PortfolioGrid.astro";
+import Footer from "../../components/Footer.astro";
+
+const projects = await getProjects();
+---
+
+<BaseLayout
+  title="Portfolio — Neda Decorations"
+  description="A look at recent weddings, events and spaces styled by Neda Decorations."
+>
+  <Nav dark />
+
+  <section class="header">
+    <p class="header__eyebrow eyebrow">Portfolio</p>
+    <h1 class="header__heading">Recent work</h1>
+  </section>
+
+  <PortfolioGrid projects={projects} />
+  <Footer />
+</BaseLayout>
+
+<style>
+  .header {
+    max-width: var(--container-width);
+    padding: 7rem var(--gutter) 1rem;
+  }
+  .header__eyebrow {
+    margin-bottom: 0.75rem;
+  }
+  .header__heading {
+    font-size: clamp(2rem, 6.5vw, 3rem);
+  }
+</style>

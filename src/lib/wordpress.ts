@@ -48,6 +48,23 @@ function stripTags(html: string): string {
   return decodeEntities(html.replace(/<[^>]*>/g, "")).trim();
 }
 
+// Pull every <img src="…"> out of rendered block content (works for both
+// the Gallery block and plain Image blocks) so we can build a custom grid
+// instead of relying on WordPress's own gallery markup/styles.
+function extractImages(html: string): string[] {
+  return [...html.matchAll(/<img[^>]+src="([^"]+)"/g)].map((m) => m[1]);
+}
+
+// Remove the images (and their <figure>/<figcaption> wrappers) from
+// rendered content, leaving just the descriptive text paragraphs.
+function stripImages(html: string): string {
+  return html
+    .replace(/<img[^>]*\/?>/g, "")
+    .replace(/<figcaption[^>]*>[\s\S]*?<\/figcaption>/g, "")
+    .replace(/<\/?figure[^>]*>/g, "")
+    .trim();
+}
+
 interface RawWpPost {
   slug: string;
   date: string;
@@ -95,4 +112,58 @@ export async function getPostBySlug(slug: string): Promise<WpPost | null> {
   // against the already-fetched, already-decoded list is small and robust.
   const posts = await getPosts();
   return posts.find((p) => p.slug === slug) ?? null;
+}
+
+export interface WpProject {
+  slug: string;
+  title: string;
+  excerpt: string;
+  description: string; // rendered HTML, images stripped out
+  images: string[];
+  coverImage: string;
+  pubDate: Date;
+}
+
+interface RawWpProject {
+  slug: string;
+  date: string;
+  title: { rendered: string };
+  excerpt: { rendered: string };
+  content: { rendered: string };
+  _embedded?: {
+    "wp:featuredmedia"?: Array<{ source_url?: string }>;
+  };
+}
+
+function mapProject(raw: RawWpProject): WpProject {
+  const images = extractImages(raw.content.rendered);
+  const coverImage =
+    raw._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? images[0] ?? FALLBACK_IMAGE;
+
+  return {
+    slug: decodeURIComponent(raw.slug),
+    title: decodeEntities(raw.title.rendered),
+    excerpt: stripTags(raw.excerpt.rendered),
+    description: stripImages(raw.content.rendered),
+    images,
+    coverImage,
+    pubDate: new Date(raw.date),
+  };
+}
+
+export async function getProjects(): Promise<WpProject[]> {
+  try {
+    const res = await fetch(`${WP_API}/projects?_embed&per_page=100&status=publish`);
+    if (!res.ok) throw new Error(`WordPress API responded ${res.status}`);
+    const raw = (await res.json()) as RawWpProject[];
+    return raw.map(mapProject).sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+  } catch (err) {
+    console.warn(`[wordpress] Could not fetch projects, building with none: ${err}`);
+    return [];
+  }
+}
+
+export async function getProjectBySlug(slug: string): Promise<WpProject | null> {
+  const projects = await getProjects();
+  return projects.find((p) => p.slug === slug) ?? null;
 }
