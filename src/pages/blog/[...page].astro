@@ -1,0 +1,30 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getPosts } from "../../lib/wordpress";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import BlogHeader from "../../components/BlogHeader.astro";
+import BlogGrid from "../../components/BlogGrid.astro";
+import PaginationNav from "../../components/PaginationNav.astro";
+import Footer from "../../components/Footer.astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getPosts();
+  return paginate(posts, { pageSize: 18 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const allPosts = await getPosts();
+const categories = [...new Set(allPosts.map((p) => p.category))];
+---
+
+<BaseLayout
+  title={page.currentPage > 1 ? `Blog — Page ${page.currentPage} — Neda Decorations` : "Blog — Neda Decorations"}
+  description="News about decor, flowers and more from the Neda Decorations studio."
+>
+  <Nav dark />
+  <BlogHeader categories={categories} />
+  <BlogGrid posts={page.data} />
+  <PaginationNav page={page} basePath="/blog" />
+  <Footer />
+</BaseLayout>

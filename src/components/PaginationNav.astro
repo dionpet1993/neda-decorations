@@ -1,0 +1,93 @@
+---
+import type { Page } from "astro";
+
+interface Props {
+  page: Page<unknown>;
+  basePath: string;
+}
+const { page, basePath } = Astro.props;
+
+const pageUrl = (n: number) => (n === 1 ? basePath : `${basePath}/${n}`);
+---
+
+{page.lastPage > 1 && (
+  <nav class="pagination" aria-label="Pagination">
+    {page.url.prev ? (
+      <a href={page.url.prev} class="pagination__link pagination__link--prev">&larr; Prev</a>
+    ) : (
+      <span class="pagination__link pagination__link--disabled">&larr; Prev</span>
+    )}
+
+    <ul class="pagination__pages">
+      {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((n) => (
+        <li>
+          <a
+            href={pageUrl(n)}
+            class:list={["pagination__page", { "is-current": n === page.currentPage }]}
+            aria-current={n === page.currentPage ? "page" : undefined}
+          >
+            {n}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    {page.url.next ? (
+      <a href={page.url.next} class="pagination__link pagination__link--next">Next &rarr;</a>
+    ) : (
+      <span class="pagination__link pagination__link--disabled">Next &rarr;</span>
+    )}
+  </nav>
+)}
+
+<style>
+  .pagination {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding: 0 var(--gutter) 4.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .pagination__link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .pagination__link:hover {
+    color: var(--color-accent);
+  }
+  .pagination__link--disabled {
+    color: var(--color-line);
+    pointer-events: none;
+  }
+
+  .pagination__pages {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .pagination__page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.85rem;
+    color: var(--color-ink-soft);
+  }
+  .pagination__page:hover {
+    color: var(--color-ink);
+  }
+  .pagination__page.is-current {
+    color: #fff;
+    background: var(--color-accent);
+    border-radius: 50%;
+  }
+</style>

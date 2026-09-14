@@ -35,6 +35,7 @@ function decodeEntities(html: string): string {
     "#8211": "–",
     "#8212": "—",
     "#8230": "…",
+    hellip: "…",
     nbsp: " ",
   };
 
