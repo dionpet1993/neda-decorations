@@ -16,6 +16,7 @@ export interface WpPost {
   category: string;
   pubDate: Date;
   heroImage: string;
+  heroImageAlt: string;
 }
 
 // Decode the handful of HTML entities WordPress commonly emits in
@@ -49,11 +50,21 @@ function stripTags(html: string): string {
   return decodeEntities(html.replace(/<[^>]*>/g, "")).trim();
 }
 
-// Pull every <img src="…"> out of rendered block content (works for both
-// the Gallery block and plain Image blocks) so we can build a custom grid
+export interface WpImage {
+  src: string;
+  alt: string;
+}
+
+// Pull every <img> out of rendered block content (works for both the
+// Gallery block and plain Image blocks) so we can build a custom grid
 // instead of relying on WordPress's own gallery markup/styles.
-function extractImages(html: string): string[] {
-  return [...html.matchAll(/<img[^>]+src="([^"]+)"/g)].map((m) => m[1]);
+function extractImages(html: string): WpImage[] {
+  return [...html.matchAll(/<img[^>]*>/g)].map((m) => {
+    const tag = m[0];
+    const src = tag.match(/src="([^"]+)"/)?.[1] ?? "";
+    const alt = decodeEntities(tag.match(/alt="([^"]*)"/)?.[1] ?? "");
+    return { src, alt };
+  });
 }
 
 // Remove the images (and their <figure>/<figcaption> wrappers) from
@@ -73,7 +84,7 @@ interface RawWpPost {
   excerpt: { rendered: string };
   content: { rendered: string };
   _embedded?: {
-    "wp:featuredmedia"?: Array<{ source_url?: string }>;
+    "wp:featuredmedia"?: Array<{ source_url?: string; alt_text?: string }>;
     "wp:term"?: Array<Array<{ taxonomy: string; name: string }>>;
   };
 }
@@ -81,17 +92,20 @@ interface RawWpPost {
 function mapPost(raw: RawWpPost): WpPost {
   const categories = raw._embedded?.["wp:term"]?.[0] ?? [];
   const category = categories.find((c) => c.name !== "Uncategorized")?.name ?? "Journal";
+  const title = decodeEntities(raw.title.rendered);
+  const media = raw._embedded?.["wp:featuredmedia"]?.[0];
 
   return {
     // WordPress percent-encodes slugs for non-Latin titles (e.g. Greek) —
     // decode so Astro's routing and our generated URLs stay consistent.
     slug: decodeURIComponent(raw.slug),
-    title: decodeEntities(raw.title.rendered),
+    title,
     excerpt: stripTags(raw.excerpt.rendered),
     content: raw.content.rendered,
     category,
     pubDate: new Date(raw.date),
-    heroImage: raw._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? FALLBACK_IMAGE,
+    heroImage: media?.source_url ?? FALLBACK_IMAGE,
+    heroImageAlt: media?.alt_text || title,
   };
 }
 
@@ -120,8 +134,9 @@ export interface WpProject {
   title: string;
   excerpt: string;
   description: string; // rendered HTML, images stripped out
-  images: string[];
+  images: WpImage[];
   coverImage: string;
+  coverImageAlt: string;
   pubDate: Date;
 }
 
@@ -132,22 +147,24 @@ interface RawWpProject {
   excerpt: { rendered: string };
   content: { rendered: string };
   _embedded?: {
-    "wp:featuredmedia"?: Array<{ source_url?: string }>;
+    "wp:featuredmedia"?: Array<{ source_url?: string; alt_text?: string }>;
   };
 }
 
 function mapProject(raw: RawWpProject): WpProject {
   const images = extractImages(raw.content.rendered);
-  const coverImage =
-    raw._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? images[0] ?? FALLBACK_IMAGE;
+  const media = raw._embedded?.["wp:featuredmedia"]?.[0];
+  const title = decodeEntities(raw.title.rendered);
+  const coverImage = media?.source_url ?? images[0]?.src ?? FALLBACK_IMAGE;
 
   return {
     slug: decodeURIComponent(raw.slug),
-    title: decodeEntities(raw.title.rendered),
+    title,
     excerpt: stripTags(raw.excerpt.rendered),
     description: stripImages(raw.content.rendered),
     images,
     coverImage,
+    coverImageAlt: media?.alt_text || title,
     pubDate: new Date(raw.date),
   };
 }

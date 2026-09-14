@@ -30,14 +30,14 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={`${post.title} — Neda Decorations`} description={post.excerpt}>
+<BaseLayout title={`${post.title} — Neda Decorations`} description={post.excerpt} image={post.heroImage}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <Nav dark />
 
   <article class="post">
     <div class="post__hero">
-      <img src={post.heroImage} alt="" role="presentation" />
+      <img src={post.heroImage} alt={post.heroImageAlt || post.title} />
     </div>
 
     <div class="post__body wrap">

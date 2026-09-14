@@ -17,7 +17,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: 
   {posts.map((post) => (
     <a href={`/blog/${post.slug}`} class="card" data-blog-card={post.category}>
       <div class="card__image">
-        <img src={post.heroImage} alt="" role="presentation" />
+        <img src={post.heroImage} alt={post.heroImageAlt || post.title} />
       </div>
       <span class="card__category">{post.category}</span>
       <h2 class="card__title">{post.title}</h2>

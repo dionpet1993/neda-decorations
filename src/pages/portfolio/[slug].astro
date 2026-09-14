@@ -17,12 +17,16 @@ if (!project) {
 }
 ---
 
-<BaseLayout title={`${project.title} — Neda Decorations`} description={project.excerpt || project.title}>
+<BaseLayout
+  title={`${project.title} — Neda Decorations`}
+  description={project.excerpt || project.title}
+  image={project.coverImage}
+>
   <Nav dark />
 
   <article class="project">
     <div class="project__hero">
-      <img src={project.coverImage} alt="" role="presentation" />
+      <img src={project.coverImage} alt={project.coverImageAlt || project.title} />
     </div>
 
     <div class="project__body wrap">
@@ -33,9 +37,9 @@ if (!project) {
 
     {project.images.length > 0 && (
       <div class="project__gallery" data-gallery>
-        {project.images.map((src, i) => (
+        {project.images.map((img, i) => (
           <button type="button" class="project__photo" data-index={i}>
-            <img src={src} alt="" loading="lazy" />
+            <img src={img.src} alt={img.alt || project.title} loading="lazy" />
           </button>
         ))}
       </div>

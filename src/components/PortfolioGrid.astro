@@ -15,7 +15,7 @@ const { projects } = Astro.props;
   {projects.map((project) => (
     <a href={`/portfolio/${project.slug}`} class="pcard">
       <div class="pcard__image">
-        <img src={project.coverImage} alt="" role="presentation" />
+        <img src={project.coverImage} alt={project.coverImageAlt || project.title} />
       </div>
       <h2 class="pcard__title">{project.title}</h2>
       {project.excerpt && <p class="pcard__excerpt">{project.excerpt}</p>}
