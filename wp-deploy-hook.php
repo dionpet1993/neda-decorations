@@ -1,14 +1,14 @@
 <?php
 /**
  * Plugin Name: Neda — Auto Deploy on Publish
- * Description: Triggers a Cloudflare Pages rebuild whenever a post is published or an already-published post is updated.
+ * Description: Triggers a Cloudflare Pages rebuild whenever a post or project is published or an already-published one is updated.
  */
 
 add_action( 'save_post', function ( $post_id, $post, $update ) {
 	if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
 		return;
 	}
-	if ( $post->post_type !== 'post' ) {
+	if ( ! in_array( $post->post_type, [ 'post', 'project' ], true ) ) {
 		return;
 	}
 	if ( $post->post_status !== 'publish' ) {
