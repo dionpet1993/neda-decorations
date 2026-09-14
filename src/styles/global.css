@@ -1,0 +1,94 @@
+:root {
+  --color-bg: #faf7f2;
+  --color-bg-alt: #ffffff;
+  --color-ink: #1c1a17;
+  --color-ink-soft: #57534a;
+  --color-navy: #0c2a63;
+  --color-accent: #8a2a26;
+  --color-line: rgba(28, 26, 23, 0.12);
+
+  --font-display: "Anton", "Arial Narrow", sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --container-width: 760px;
+  --gutter: clamp(1.25rem, 5vw, 2.5rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+
+p {
+  margin: 0;
+}
+
+.wrap {
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.9rem 1.75rem;
+  border: 1px solid currentColor;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}

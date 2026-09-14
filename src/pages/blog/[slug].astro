@@ -1,0 +1,126 @@
+---
+import { getPosts, getPostBySlug } from "../../lib/wordpress";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug!);
+
+if (!post) {
+  return Astro.redirect("/blog");
+}
+
+const dateFormatter = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.title,
+  description: post.excerpt,
+  image: new URL(post.heroImage, Astro.site ?? "https://nedadecorations.gr").toString(),
+  datePublished: post.pubDate.toISOString(),
+  author: { "@type": "Organization", name: "Neda Decorations" },
+  publisher: { "@type": "Organization", name: "Neda Decorations" },
+};
+---
+
+<BaseLayout title={`${post.title} — Neda Decorations`} description={post.excerpt}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <Nav dark />
+
+  <article class="post">
+    <div class="post__hero">
+      <img src={post.heroImage} alt="" role="presentation" />
+    </div>
+
+    <div class="post__body wrap">
+      <a href="/blog" class="post__back">&larr; Back to blog</a>
+      <span class="post__category">{post.category}</span>
+      <h1 class="post__title">{post.title}</h1>
+      <time class="post__date" datetime={post.pubDate.toISOString()}>
+        {dateFormatter.format(post.pubDate)}
+      </time>
+
+      <div class="post__content" set:html={post.content} />
+    </div>
+  </article>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .post__hero {
+    margin-top: 4.5rem;
+  }
+  .post__hero img {
+    width: 100%;
+    height: clamp(280px, 46vw, 460px);
+    object-fit: cover;
+  }
+
+  .post__body {
+    padding: 2.5rem var(--gutter) 4rem;
+  }
+
+  .post__back {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+    margin-bottom: 2rem;
+  }
+  .post__back:hover {
+    color: var(--color-accent);
+  }
+
+  .post__category {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .post__title {
+    font-size: clamp(2rem, 6vw, 3rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .post__date {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-ink-soft);
+    margin-bottom: 2.5rem;
+  }
+
+  .post__content {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-ink);
+    max-width: 65ch;
+  }
+  .post__content :global(h2) {
+    font-family: var(--font-display);
+    text-transform: none;
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .post__content :global(p) {
+    margin-bottom: 1.25rem;
+  }
+  .post__content :global(img) {
+    width: 100%;
+    height: auto;
+    margin: 1.5rem 0;
+  }
+</style>

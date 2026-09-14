@@ -1,0 +1,56 @@
+---
+const image = "/images/hero.webp";
+---
+
+<section class="contact-hero">
+  <img src={image} alt="" role="presentation" />
+  <div class="contact-hero__scrim"></div>
+
+  <div class="contact-hero__content">
+    <h1>Let's talk</h1>
+    <p>We'd love to hear about your event and help you create something unforgettable.</p>
+  </div>
+</section>
+
+<style>
+  .contact-hero {
+    position: relative;
+    min-height: 46svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    color: #fff;
+  }
+
+  .contact-hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+  }
+
+  .contact-hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 10, 8, 0.25) 0%, rgba(10, 10, 8, 0.6) 100%);
+  }
+
+  .contact-hero__content {
+    position: relative;
+    z-index: 1;
+    padding: 6rem var(--gutter) 2.5rem;
+  }
+
+  .contact-hero__content h1 {
+    font-size: clamp(2.75rem, 10vw, 4.5rem);
+  }
+
+  .contact-hero__content p {
+    margin-top: 0.9rem;
+    max-width: 32ch;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+</style>

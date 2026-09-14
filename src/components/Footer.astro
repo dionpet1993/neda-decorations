@@ -1,0 +1,113 @@
+---
+const locations = [
+  {
+    name: "Kolonaki",
+    address: "12 Speusippou Street",
+    phones: ["+30 210 7297010", "+30 695 982 9367"],
+  },
+  {
+    name: "Aigaleo",
+    address: "503 Thivon Avenue",
+    phones: ["+30 210 5900102"],
+  },
+  {
+    name: "Mykonos",
+    address: "Elia Beach 846 00 · Myconian Imperial — Leading Hotels of the World",
+    phones: ["+30 695 982 9367"],
+  },
+];
+
+const socials = ["@nedadecorations", "@nedashop", "nedashop.gr", "nedadecorations.gr"];
+---
+
+<footer class="footer">
+  <div class="wrap footer__top">
+    <nav class="footer__nav">
+      <a href="/">Home</a>
+      <a href="/portfolio">Portfolio</a>
+      <a href="/studio">Studio</a>
+      <a href="/experiences">Experiences</a>
+      <a href="/contact" class="is-accent">Contact</a>
+    </nav>
+
+    <div class="footer__locations">
+      {locations.map((loc) => (
+        <div class="footer__location">
+          <p class="footer__location-name">{loc.name} — {loc.address}</p>
+          <p class="footer__location-phone">Tel: {loc.phones.join(", ")}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="wrap footer__bottom">
+    <a href="mailto:info@nedadecorations.gr" class="footer__email">info@nedadecorations.gr</a>
+    <ul class="footer__socials">
+      {socials.map((s) => <li>{s}</li>)}
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-navy);
+    color: #fff;
+    padding-block: clamp(3rem, 7vw, 5rem) 2rem;
+  }
+
+  .footer__top {
+    max-width: var(--container-width);
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .footer__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    letter-spacing: 0.03em;
+  }
+  .footer__nav .is-accent {
+    color: var(--color-accent);
+  }
+
+  .footer__locations {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .footer__location-name {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  .footer__location-phone {
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 0.15rem;
+  }
+
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.9rem;
+  }
+
+  .footer__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+</style>

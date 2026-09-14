@@ -1,0 +1,71 @@
+---
+const services = [
+  { n: "01", title: "Event Design", text: "From concept to full execution" },
+  { n: "02", title: "Floral Design", text: "Custom compositions & installations" },
+  { n: "03", title: "Space Styling", text: "Hotels, restaurants & retail environments" },
+  { n: "04", title: "Creative Direction", text: "Visual identity for events & brands" },
+];
+---
+
+<section class="services">
+  <h2 class="services__heading">Services</h2>
+
+  <ul class="services__list">
+    {services.map((s) => (
+      <li>
+        <span class="services__n">{s.n}</span>
+        <span class="services__title">{s.title}</span>
+        <span class="services__text">{s.text}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .services {
+    max-width: var(--container-width);
+    padding: 0 var(--gutter) 4rem;
+  }
+
+  .services__heading {
+    font-size: clamp(1.6rem, 5vw, 2rem);
+    margin-bottom: 1.75rem;
+  }
+
+  .services__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .services__list li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0.15rem 0.75rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--color-line);
+  }
+  .services__list li:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .services__n {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-accent);
+  }
+
+  .services__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 3.5vw, 1.4rem);
+    letter-spacing: 0.01em;
+  }
+
+  .services__text {
+    grid-column: 2;
+    font-size: 0.9rem;
+    color: var(--color-ink-soft);
+  }
+</style>

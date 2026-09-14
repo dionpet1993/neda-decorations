@@ -1,0 +1,83 @@
+---
+interface Props {
+  categories: string[];
+}
+const { categories: postCategories } = Astro.props;
+const categories = ["All", ...postCategories];
+---
+
+<section class="blog-header">
+  <p class="blog-header__eyebrow eyebrow">Blog</p>
+  <h1 class="blog-header__heading">News about decor, flowers &amp; more</h1>
+
+  <ul class="blog-header__tabs" data-blog-tabs>
+    {categories.map((c, i) => (
+      <li>
+        <button type="button" data-filter={c} class:list={["tab", { "is-active": i === 0 }]}>
+          {c}
+        </button>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .blog-header {
+    max-width: var(--container-width);
+    padding: 7rem var(--gutter) 2rem;
+  }
+
+  .blog-header__eyebrow {
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-header__heading {
+    font-size: clamp(2rem, 6.5vw, 3rem);
+    margin-bottom: 2rem;
+  }
+
+  .blog-header__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--color-line);
+    padding-bottom: 1.25rem;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-soft);
+    cursor: pointer;
+  }
+
+  .tab.is-active {
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>("[data-blog-tabs] .tab");
+  const cards = document.querySelectorAll<HTMLElement>("[data-blog-card]");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => t.classList.remove("is-active"));
+      tab.classList.add("is-active");
+
+      const filter = tab.dataset.filter;
+      cards.forEach((card) => {
+        const match = filter === "All" || card.dataset.blogCard === filter;
+        card.hidden = !match;
+      });
+    });
+  });
+</script>

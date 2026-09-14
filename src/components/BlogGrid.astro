@@ -1,0 +1,103 @@
+---
+import type { WpPost } from "../lib/wordpress";
+
+interface Props {
+  posts: WpPost[];
+}
+const { posts } = Astro.props;
+
+const dateFormatter = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" });
+---
+
+<section class="blog-grid">
+  {posts.length === 0 && (
+    <p class="blog-grid__empty">No articles published yet — check back soon.</p>
+  )}
+
+  {posts.map((post) => (
+    <a href={`/blog/${post.slug}`} class="card" data-blog-card={post.category}>
+      <div class="card__image">
+        <img src={post.heroImage} alt="" role="presentation" />
+      </div>
+      <span class="card__category">{post.category}</span>
+      <h2 class="card__title">{post.title}</h2>
+      <p class="card__excerpt">{post.excerpt}</p>
+      <span class="card__date">{dateFormatter.format(post.pubDate)}</span>
+    </a>
+  ))}
+</section>
+
+<style>
+  .blog-grid {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding: 2.5rem var(--gutter) 4.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .blog-grid__empty {
+    grid-column: 1 / -1;
+    color: var(--color-ink-soft);
+    font-size: 0.95rem;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card__image {
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .card__image img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .card:hover .card__image img {
+    transform: scale(1.04);
+  }
+
+  .card__category {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .card__title {
+    font-size: 1.35rem;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.6rem;
+  }
+
+  .card__excerpt {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    margin-bottom: 0.75rem;
+  }
+
+  .card__date {
+    font-size: 0.75rem;
+    color: var(--color-ink-soft);
+  }
+</style>

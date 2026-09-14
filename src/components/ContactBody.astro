@@ -1,0 +1,26 @@
+---
+import ContactForm from "./ContactForm.astro";
+import LocationsList from "./LocationsList.astro";
+---
+
+<section class="contact-body">
+  <ContactForm />
+  <LocationsList />
+</section>
+
+<style>
+  .contact-body {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    max-width: 1040px;
+    padding: 3.5rem var(--gutter) 4.5rem;
+  }
+
+  @media (max-width: 780px) {
+    .contact-body {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+</style>
