@@ -1,15 +1,22 @@
 ---
+import type { GetStaticPaths } from "astro";
 import { getProjects } from "../../lib/wordpress";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Nav from "../../components/Nav.astro";
 import PortfolioGrid from "../../components/PortfolioGrid.astro";
+import PaginationNav from "../../components/PaginationNav.astro";
 import Footer from "../../components/Footer.astro";
 
-const projects = await getProjects();
+export const getStaticPaths = (async ({ paginate }) => {
+  const projects = await getProjects();
+  return paginate(projects, { pageSize: 18 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
 ---
 
 <BaseLayout
-  title="Portfolio — Neda Decorations"
+  title={page.currentPage > 1 ? `Portfolio — Page ${page.currentPage} — Neda Decorations` : "Portfolio — Neda Decorations"}
   description="A look at recent weddings, events and spaces styled by Neda Decorations."
 >
   <Nav dark />
@@ -19,7 +26,8 @@ const projects = await getProjects();
     <h1 class="header__heading">Recent work</h1>
   </section>
 
-  <PortfolioGrid projects={projects} />
+  <PortfolioGrid projects={page.data} />
+  <PaginationNav page={page} basePath="/portfolio" />
   <Footer />
 </BaseLayout>
 
