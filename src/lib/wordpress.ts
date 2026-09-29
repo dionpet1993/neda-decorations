@@ -137,6 +137,7 @@ export interface WpProject {
   images: WpImage[];
   coverImage: string;
   coverImageAlt: string;
+  category: string;
   pubDate: Date;
 }
 
@@ -148,6 +149,7 @@ interface RawWpProject {
   content: { rendered: string };
   _embedded?: {
     "wp:featuredmedia"?: Array<{ source_url?: string; alt_text?: string }>;
+    "wp:term"?: Array<Array<{ taxonomy: string; name: string }>>;
   };
 }
 
@@ -156,6 +158,8 @@ function mapProject(raw: RawWpProject): WpProject {
   const media = raw._embedded?.["wp:featuredmedia"]?.[0];
   const title = decodeEntities(raw.title.rendered);
   const coverImage = media?.source_url ?? images[0]?.src ?? FALLBACK_IMAGE;
+  const categoryTerms = (raw._embedded?.["wp:term"] ?? []).flat();
+  const category = categoryTerms.find((t) => t.taxonomy === "project_category")?.name ?? "Other";
 
   return {
     slug: decodeURIComponent(raw.slug),
@@ -165,6 +169,7 @@ function mapProject(raw: RawWpProject): WpProject {
     images,
     coverImage,
     coverImageAlt: media?.alt_text || title,
+    category,
     pubDate: new Date(raw.date),
   };
 }

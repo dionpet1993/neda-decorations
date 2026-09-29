@@ -13,7 +13,7 @@ const { projects } = Astro.props;
   )}
 
   {projects.map((project) => (
-    <a href={`/portfolio/${project.slug}`} class="pcard">
+    <a href={`/works/${project.slug}`} class="pcard" data-work-card={project.category}>
       <div class="pcard__image">
         <img src={project.coverImage} alt={project.coverImageAlt || project.title} />
       </div>

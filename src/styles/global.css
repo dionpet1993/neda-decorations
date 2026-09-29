@@ -3,8 +3,9 @@
   --color-bg-alt: #ffffff;
   --color-ink: #1c1a17;
   --color-ink-soft: #57534a;
-  --color-navy: #0c2a63;
-  --color-accent: #8a2a26;
+  --color-navy: #1414e0;
+  --color-accent: #1414e0;
+  --color-accent-alt: #9fd1ff;
   --color-line: rgba(28, 26, 23, 0.12);
 
   --font-display: "PT Sans Narrow", "Arial Narrow", sans-serif;

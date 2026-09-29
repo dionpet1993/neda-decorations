@@ -2,23 +2,56 @@
 ---
 
 <section class="studio-intro">
-  <p>
-    NEDA Decorations is a leading floral and event design studio with over 25 years of
-    experience.<br />
-    We specialize in transforming spaces into immersive environments through flowers,
-    materials and design.
-  </p>
+  <h1 class="studio-intro__heading">Studio</h1>
+  <p class="studio-intro__tagline">Where ideas take shape.</p>
+
+  <div class="studio-intro__body">
+    <p>
+      Στο Studio της Neda σχεδιάζουμε, κατασκευάζουμε και εξελίσσουμε τις ιδέες που
+      βρίσκονται πίσω από κάθε project.
+    </p>
+    <p>
+      Εδώ δημιουργούνται οι custom κατασκευές, τα installations και τα ειδικά στοιχεία
+      μεγάλης κλίμακας που δίνουν σε κάθε χώρο τη δική του ταυτότητα.
+    </p>
+    <p>
+      Με συνδυασμό σχεδιασμού, τεχνογνωσίας, υλικών και χειροποίητης κατασκευής,
+      μετατρέπουμε το concept σε πραγματικότητα.
+    </p>
+    <p class="studio-intro__signoff">From concept to creation.</p>
+  </div>
 </section>
 
 <style>
   .studio-intro {
     max-width: var(--container-width);
-    padding: 2.5rem var(--gutter) 1rem;
+    padding: 3rem var(--gutter) 1rem;
   }
 
-  .studio-intro p {
+  .studio-intro__heading {
+    font-size: clamp(3rem, 12vw, 5rem);
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .studio-intro__tagline {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 2.5rem;
+  }
+
+  .studio-intro__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
     font-size: 1rem;
     line-height: 1.75;
     color: var(--color-ink);
+  }
+
+  .studio-intro__signoff {
+    font-weight: 700;
   }
 </style>

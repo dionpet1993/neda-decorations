@@ -3,6 +3,7 @@ import type { GetStaticPaths } from "astro";
 import { getProjects } from "../../lib/wordpress";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Nav from "../../components/Nav.astro";
+import WorksHeader from "../../components/WorksHeader.astro";
 import PortfolioGrid from "../../components/PortfolioGrid.astro";
 import PaginationNav from "../../components/PaginationNav.astro";
 import Footer from "../../components/Footer.astro";
@@ -13,33 +14,17 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
+const allProjects = await getProjects();
+const categories = [...new Set(allProjects.map((p) => p.category))];
 ---
 
 <BaseLayout
-  title={page.currentPage > 1 ? `Portfolio — Page ${page.currentPage} — Neda Decorations` : "Portfolio — Neda Decorations"}
+  title={page.currentPage > 1 ? `Works — Page ${page.currentPage} — Neda Decorations` : "Works — Neda Decorations"}
   description="A look at recent weddings, events and spaces styled by Neda Decorations."
 >
   <Nav dark />
-
-  <section class="header">
-    <p class="header__eyebrow eyebrow">Portfolio</p>
-    <h1 class="header__heading">Recent work</h1>
-  </section>
-
+  <WorksHeader categories={categories} />
   <PortfolioGrid projects={page.data} />
-  <PaginationNav page={page} basePath="/portfolio" />
+  <PaginationNav page={page} basePath="/works" />
   <Footer />
 </BaseLayout>
-
-<style>
-  .header {
-    max-width: var(--container-width);
-    padding: 7rem var(--gutter) 1rem;
-  }
-  .header__eyebrow {
-    margin-bottom: 0.75rem;
-  }
-  .header__heading {
-    font-size: clamp(2rem, 6.5vw, 3rem);
-  }
-</style>

@@ -1,0 +1,90 @@
+---
+interface Props {
+  categories: string[];
+}
+const { categories: workCategories } = Astro.props;
+const categories = ["All", ...workCategories];
+---
+
+<section class="works-header">
+  <div class="works-header__top">
+    <h1 class="works-header__heading">Works</h1>
+    <p class="works-header__eyebrow eyebrow">Selected projects by Neda.</p>
+  </div>
+
+  <ul class="works-header__tabs" data-works-tabs>
+    {categories.map((c, i) => (
+      <li>
+        <button type="button" data-filter={c} class:list={["tab", { "is-active": i === 0 }]}>
+          {c}
+        </button>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .works-header {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding: 7rem var(--gutter) 2rem;
+  }
+
+  .works-header__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .works-header__heading {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+
+  .works-header__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--color-line);
+    padding-bottom: 1.25rem;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  .tab.is-active {
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>("[data-works-tabs] .tab");
+  const cards = document.querySelectorAll<HTMLElement>("[data-work-card]");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => t.classList.remove("is-active"));
+      tab.classList.add("is-active");
+
+      const filter = tab.dataset.filter;
+      cards.forEach((card) => {
+        const match = filter === "All" || card.dataset.workCard === filter;
+        card.hidden = !match;
+      });
+    });
+  });
+</script>

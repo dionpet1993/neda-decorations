@@ -21,4 +21,30 @@ add_action( 'init', function () {
 		'has_archive'  => false,
 		'rewrite'      => [ 'slug' => 'projects' ],
 	] );
+
+	register_taxonomy( 'project_category', 'project', [
+		'labels' => [
+			'name'          => 'Work Categories',
+			'singular_name' => 'Work Category',
+		],
+		'public'            => true,
+		'show_in_rest'      => true,
+		'rest_base'         => 'project_categories',
+		'hierarchical'      => true,
+		'show_admin_column' => true,
+	] );
 } );
+
+// Seed the default filter categories from the mockup once, so the client
+// doesn't have to type them in by hand.
+add_action( 'init', function () {
+	if ( get_option( 'neda_project_categories_seeded' ) ) {
+		return;
+	}
+	foreach ( [ 'Christmas', 'Events', 'Weddings', 'Hospitality', 'Fashion' ] as $term ) {
+		if ( ! term_exists( $term, 'project_category' ) ) {
+			wp_insert_term( $term, 'project_category' );
+		}
+	}
+	update_option( 'neda_project_categories_seeded', true );
+}, 20 );

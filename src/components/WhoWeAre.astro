@@ -1,0 +1,77 @@
+---
+const brands = [
+  {
+    name: "Neda Decorations",
+    body: "Δημιουργούμε χώρους, εικόνες και εμπειρίες με ξεχωριστή αισθητική ταυτότητα. Από το concept και τον σχεδιασμό μέχρι την υλοποίηση, κάθε project αντιμετωπίζεται ως μια ολοκληρωμένη δημιουργική σύνθεση.",
+  },
+  {
+    name: "Nedashop",
+    body: "Ένας επιλεγμένος κόσμος αντικειμένων και συλλογών για το σπίτι και τον χώρο. Curated επιλογές με χαρακτήρα, σύγχρονο design και διαχρονική αισθητική.",
+  },
+  {
+    name: "Neda Imports",
+    body: "Μια curated επιλογή διεθνών brands που μοιράζονται την ίδια προσέγγιση στην ποιότητα, το design και την αισθητική. Brands με ξεχωριστή ταυτότητα, επιλεγμένα για την ελληνική αγορά.",
+  },
+];
+---
+
+<section class="who">
+  <p class="who__eyebrow eyebrow">Who We Are</p>
+
+  <div class="who__brands">
+    {brands.map((brand) => (
+      <div class="who__brand">
+        <h2 class="who__brand-name">{brand.name}</h2>
+        <p class="who__brand-body">{brand.body}</p>
+      </div>
+    ))}
+  </div>
+
+  <p class="who__signoff">Three expressions of one creative identity.</p>
+</section>
+
+<style>
+  .who {
+    max-width: var(--container-width);
+    padding: 7rem var(--gutter) 4.5rem;
+  }
+
+  .who__eyebrow {
+    margin-bottom: 2.5rem;
+  }
+
+  .who__brands {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .who__brand {
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .who__brand:last-child {
+    border-bottom: none;
+  }
+
+  .who__brand-name {
+    font-size: clamp(1.5rem, 5vw, 2.1rem);
+    color: var(--color-accent);
+    text-transform: none;
+    margin-bottom: 0.75rem;
+  }
+
+  .who__brand-body {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-ink);
+    max-width: 60ch;
+  }
+
+  .who__signoff {
+    margin-top: 3rem;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--color-ink-soft);
+  }
+</style>

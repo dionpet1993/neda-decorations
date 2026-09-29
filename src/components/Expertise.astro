@@ -1,0 +1,71 @@
+---
+const audiences = ["Planners", "Architects", "Hospitality", "Commercial Spaces", "Retail", "Events", "You"];
+---
+
+<section class="expertise">
+  <p class="expertise__eyebrow eyebrow">Expertise</p>
+  <h1 class="expertise__heading">Expertise</h1>
+
+  <ul class="expertise__tabs">
+    {audiences.map((a) => <li>{a}</li>)}
+  </ul>
+
+  <div class="expertise__body">
+    <p>
+      Η Neda δημιουργεί χώρους, ατμόσφαιρες και εμπειρίες με ξεχωριστή αισθητική
+      ταυτότητα. Από την αρχική ιδέα και τη δημιουργική κατεύθυνση μέχρι την επιλογή
+      αντικειμένων, το styling, την παραγωγή και την τελική εγκατάσταση, κάθε project
+      αντιμετωπίζεται ως ένα ολοκληρωμένο δημιουργικό έργο.
+    </p>
+    <p>
+      Συνεργαζόμαστε με event planners, αρχιτέκτονες και designers, hospitality brands
+      &amp; spaces, εμπορικούς χώρους και ιδιώτες, δημιουργώντας προτάσεις που
+      ανταποκρίνονται στον χαρακτήρα, τον χώρο και την ταυτότητα κάθε project.
+    </p>
+    <p>
+      Συνδυάζουμε design, curation, sourcing και production, μετατρέποντας μια ιδέα σε
+      έναν ολοκληρωμένο χώρο με χαρακτήρα και ξεκάθαρη αισθητική.
+    </p>
+  </div>
+</section>
+
+<style>
+  .expertise {
+    max-width: var(--container-width);
+    padding: 7rem var(--gutter) 4.5rem;
+  }
+
+  .expertise__eyebrow {
+    margin-bottom: 0.75rem;
+  }
+
+  .expertise__heading {
+    font-size: clamp(2.75rem, 9vw, 4.5rem);
+    color: var(--color-accent);
+    margin-bottom: 2rem;
+  }
+
+  .expertise__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    list-style: none;
+    margin: 0 0 2.5rem;
+    padding: 0 0 1.25rem;
+    border-bottom: 1px solid var(--color-line);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-soft);
+  }
+
+  .expertise__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-ink);
+  }
+</style>
