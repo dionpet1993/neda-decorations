@@ -1,9 +1,4 @@
 ---
-interface Props {
-  dark?: boolean;
-}
-const { dark = false } = Astro.props;
-
 const links = [
   { href: "/works", label: "Works" },
   { href: "/studio", label: "Studio" },
@@ -14,245 +9,69 @@ const links = [
 ];
 ---
 
-<header class:list={["site-header", { "is-dark": dark }]} data-header>
-  <a href="/" class="site-header__mark">Neda</a>
+<header class="site-header">
+  <div class="site-header__top">
+    <a href="/" class="site-header__mark">Neda Decorations</a>
+    <span class="site-header__tag">Athens · Mykonos</span>
+  </div>
 
-  <button class="burger" data-burger aria-label="Open menu" aria-expanded="false">
-    <span></span>
-    <span></span>
-  </button>
-</header>
-
-<div class="menu" data-menu>
-  <nav class="menu__nav">
+  <nav class="primary-nav" aria-label="Primary">
     <ul>
-      {links.map((link, i) => (
-        <li style={`--i: ${i}`}>
-          <a href={link.href}>{link.label}</a>
-        </li>
+      {links.map((link) => (
+        <li><a href={link.href}>{link.label}</a></li>
       ))}
     </ul>
   </nav>
-
-  <div class="menu__info">
-    <div class="menu__block">
-      <span class="menu__label">Contact</span>
-      <a href="tel:+302107297010">+30 210 7297010</a>
-      <a href="mailto:info@nedadecorations.gr">info@nedadecorations.gr</a>
-    </div>
-
-    <div class="menu__block">
-      <span class="menu__label">Opening hours</span>
-      <p>Mon – Sat: 09:00 – 20:00<br />Sunday: Closed</p>
-    </div>
-
-    <div class="menu__block">
-      <span class="menu__label">Follow</span>
-      <a href="https://instagram.com/nedadecorations" target="_blank" rel="noreferrer">@nedadecorations</a>
-      <a href="https://instagram.com/nedashop" target="_blank" rel="noreferrer">@nedashop</a>
-    </div>
-  </div>
-</div>
+</header>
 
 <style>
   .site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem var(--gutter);
-    color: #fff;
-    transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .site-header.is-scrolled,
-  .site-header.is-dark {
     background: var(--color-bg-alt);
-    color: var(--color-ink);
-    box-shadow: 0 1px 0 var(--color-line);
+    padding: 1.5rem var(--gutter) 1rem;
   }
 
-  .site-header.is-open {
-    color: #fff;
+  .site-header__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
   .site-header__mark {
     font-family: var(--font-display);
-    font-size: 1.5rem;
-    letter-spacing: 0.04em;
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+    letter-spacing: 0.01em;
+    color: var(--color-ink);
   }
 
-  .burger {
-    position: relative;
-    z-index: 60;
-    width: 2.5rem;
-    height: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: inherit;
-  }
-
-  .burger span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: currentColor;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-  }
-
-  .site-header.is-open .burger span:first-child {
-    transform: translateY(4px) rotate(45deg);
-  }
-  .site-header.is-open .burger span:last-child {
-    transform: translateY(-4px) rotate(-45deg);
-  }
-
-  .menu {
-    position: fixed;
-    inset: 0;
-    z-index: 40;
-    background: var(--color-navy);
-    color: #fff;
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    align-items: center;
-    gap: 2rem;
-    padding: 6rem var(--gutter) 3rem;
-    overflow-y: auto;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
-  }
-
-  .menu.is-open {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .menu__nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .menu__nav a {
-    font-family: var(--font-display);
-    font-size: clamp(2.25rem, 6.5vw, 3.75rem);
-    letter-spacing: 0.02em;
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.4s ease, transform 0.4s ease, color 0.2s ease;
-    transition-delay: calc(var(--i) * 0.05s);
-  }
-
-  .menu.is-open .menu__nav a {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .menu__nav a:hover {
-    color: var(--color-accent-alt, #d98b86);
-  }
-
-  .menu__info {
-    display: flex;
-    flex-direction: column;
-    gap: 2.25rem;
-    padding-left: 2rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
-    opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.4s ease 0.25s, transform 0.4s ease 0.25s;
-  }
-
-  .menu.is-open .menu__info {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .menu__block {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .menu__label {
+  .site-header__tag {
     font-size: 0.7rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.55);
-    margin-bottom: 0.2rem;
+    color: var(--color-ink-soft);
+    white-space: nowrap;
   }
 
-  .menu__block a,
-  .menu__block p {
-    font-size: 0.95rem;
-    color: #fff;
-    margin: 0;
-    line-height: 1.6;
+  .primary-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
   }
 
-  .menu__block a:hover {
-    color: var(--color-accent-alt, #d98b86);
+  .primary-nav a {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink);
   }
 
-  @media (max-width: 780px) {
-    .menu {
-      grid-template-columns: 1fr;
-      align-content: start;
-      gap: 3rem;
-      padding-top: 5.5rem;
-    }
-
-    .menu__info {
-      padding-left: 0;
-      padding-top: 2rem;
-      border-left: none;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-    }
+  .primary-nav a:hover {
+    color: var(--color-accent);
   }
 </style>
-
-<script>
-  const header = document.querySelector<HTMLElement>("[data-header]");
-  const burger = document.querySelector<HTMLButtonElement>("[data-burger]");
-  const menu = document.querySelector<HTMLElement>("[data-menu]");
-
-  const setOpen = (open: boolean) => {
-    header?.classList.toggle("is-open", open);
-    menu?.classList.toggle("is-open", open);
-    burger?.setAttribute("aria-expanded", String(open));
-    document.body.style.overflow = open ? "hidden" : "";
-  };
-
-  burger?.addEventListener("click", () => {
-    const isOpen = header?.classList.contains("is-open");
-    setOpen(!isOpen);
-  });
-
-  menu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
-
-  const onScroll = () => {
-    if (header?.classList.contains("is-open")) return;
-    header?.classList.toggle("is-scrolled", window.scrollY > window.innerHeight * 0.75);
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-</script>

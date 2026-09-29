@@ -1,0 +1,51 @@
+---
+// TODO: swap for the real client photography per category.
+const items = [
+  { label: "Christmas", image: "/images/story-detail-2.webp", href: "/works" },
+  { label: "Weddings", image: "/images/story-detail-1.webp", href: "/works" },
+  { label: "Hotels", image: "/images/hero.webp", href: "/works" },
+  { label: "Studio", image: "/images/story-main.webp", href: "/studio" },
+];
+---
+
+<section class="highlights">
+  {items.map((item) => (
+    <a href={item.href} class="highlights__item">
+      <span class="highlights__label">{item.label}</span>
+      <img src={item.image} alt="" role="presentation" />
+    </a>
+  ))}
+</section>
+
+<style>
+  .highlights {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .highlights__item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .highlights__label {
+    padding: 1rem var(--gutter) 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .highlights__item img {
+    width: 100%;
+    height: clamp(160px, 22vw, 260px);
+    object-fit: cover;
+  }
+
+  @media (max-width: 720px) {
+    .highlights {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

@@ -9,10 +9,23 @@ const items = [
 
 <section class="create">
   <h2 class="create__heading">What we create</h2>
+
+  <p class="create__body">
+    With decades of experience, our team has designed events and spaces for private
+    clients and leading brands.<br />
+    Each project reflects a balance between creativity, precision and emotion.
+  </p>
+
   <p class="create__intro">We design complete visual experiences for:</p>
-  <ul class="create__list">
-    {items.map((item) => <li>{item}</li>)}
-  </ul>
+
+  <ol class="create__list">
+    {items.map((item, i) => (
+      <li>
+        <span class="create__n">{String(i + 1).padStart(2, "0")}</span>
+        <span>{item}</span>
+      </li>
+    ))}
+  </ol>
 </section>
 
 <style>
@@ -26,19 +39,51 @@ const items = [
     margin-bottom: 1.5rem;
   }
 
-  .create__intro {
+  .create__body {
     font-size: 0.95rem;
+    line-height: 1.7;
     color: var(--color-ink);
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .create__intro {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    margin-bottom: 1.25rem;
   }
 
   .create__list {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(2, auto);
+    column-gap: 2rem;
+    row-gap: 1rem;
     font-size: 0.95rem;
+  }
+
+  .create__list li {
     display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.6rem;
+  }
+
+  .create__n {
+    font-family: var(--font-display);
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  @media (max-width: 480px) {
+    .create__list {
+      grid-template-columns: 1fr;
+      grid-auto-flow: row;
+    }
   }
 </style>

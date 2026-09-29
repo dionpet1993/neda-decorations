@@ -1,88 +1,24 @@
 ---
-const categoryImage = "/images/story-main.webp";
-const detailImages = ["/images/story-detail-1.webp", "/images/story-detail-2.webp"];
-
-const categories = [
-  { label: "Event Design" },
-  { label: "Space Styling" },
-  { label: "Floral Design" },
-  { label: "The Art of bloom\nArtificial" },
-];
+// TODO: swap for the real client photography.
+const photo = "/images/story-main.webp";
 ---
 
 <section class="story">
-  <div class="story__collage">
-    <div class="story__photo">
-      <img src={categoryImage} alt="Floral installation detail" />
-      <ul class="story__categories">
-        {categories.map((c) => (
-          <li>{c.label.split("\n").map((line) => <span>{line}</span>)}</li>
-        ))}
-      </ul>
-    </div>
-
-    <div class="story__details">
-      {detailImages.map((src) => <img src={src} alt="" role="presentation" />)}
-    </div>
-
+  <div class="story__photo">
+    <img src={photo} alt="" role="presentation" />
     <h2 class="story__heading">
       Every space<br />has a story.<br />We make it<br />unforgettable.
     </h2>
   </div>
-
-  <p class="story__text wrap">
-    With decades of experience, our team has designed events and spaces for private
-    clients and leading brands.<br />
-    Each project reflects a balance between creativity, precision and emotion.
-  </p>
 </section>
 
 <style>
-  .story {
-    background: var(--color-bg-alt);
-  }
-
-  .story__collage {
+  .story__photo {
     position: relative;
   }
-
   .story__photo img {
     width: 100%;
-    height: clamp(340px, 56vw, 560px);
-    object-fit: cover;
-  }
-
-  .story__categories {
-    position: absolute;
-    top: 20%;
-    left: 0;
-    right: 0;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0 var(--gutter);
-    list-style: none;
-  }
-  .story__categories li {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    color: var(--color-accent);
-  }
-
-  .story__details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    margin-top: 5px;
-  }
-  .story__details img {
-    width: 100%;
-    height: clamp(260px, 45vw, 400px);
+    height: clamp(360px, 60vw, 560px);
     object-fit: cover;
   }
 
@@ -90,19 +26,11 @@ const categories = [
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 26%;
+    bottom: 1.5rem;
     z-index: 1;
     margin: 0;
     padding: 0 var(--gutter);
-    color: var(--color-accent);
-    font-size: clamp(2.6rem, 11vw, 4.75rem);
-  }
-
-  .story__text {
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
-    font-size: 0.95rem;
-    line-height: 1.7;
     color: var(--color-ink);
+    font-size: clamp(2.1rem, 8.5vw, 3.5rem);
   }
 </style>
