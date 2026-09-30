@@ -9,10 +9,17 @@ const links = [
 ];
 ---
 
-<header class="site-header">
+<header class="site-header" data-header>
   <div class="site-header__top">
     <a href="/" class="site-header__mark">Neda Decorations</a>
-    <span class="site-header__tag">Athens · Mykonos</span>
+
+    <div class="site-header__right">
+      <span class="site-header__tag">Athens · Mykonos</span>
+      <button class="burger" data-burger aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </div>
 
   <nav class="primary-nav" aria-label="Primary">
@@ -23,6 +30,22 @@ const links = [
     </ul>
   </nav>
 </header>
+
+<div class="menu" data-menu>
+  <nav class="menu__nav">
+    <ul>
+      {links.map((link, i) => (
+        <li style={`--i: ${i}`}>
+          <a href={link.href}>{link.label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+  <div class="menu__footer">
+    <span>Athens · Mykonos</span>
+    <a href="mailto:info@nedadecorations.gr">info@nedadecorations.gr</a>
+  </div>
+</div>
 
 <style>
   .site-header {
@@ -35,7 +58,12 @@ const links = [
     align-items: baseline;
     justify-content: space-between;
     gap: 1rem;
-    flex-wrap: wrap;
+  }
+
+  .site-header__right {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
   }
 
   .site-header__mark {
@@ -77,4 +105,126 @@ const links = [
   .primary-nav a:hover {
     color: var(--color-accent);
   }
+
+  .burger {
+    display: none;
+    position: relative;
+    z-index: 60;
+    width: 2rem;
+    height: 2rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-ink);
+  }
+  .burger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: currentColor;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .burger.is-open span:first-child {
+    transform: translateY(4px) rotate(45deg);
+  }
+  .burger.is-open span:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: var(--color-navy);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem var(--gutter) 3rem;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  }
+  .menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .menu__nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .menu__nav a {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.25rem, 12vw, 3.5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.4s ease, transform 0.4s ease, color 0.2s ease;
+    transition-delay: calc(var(--i) * 0.05s);
+  }
+  .menu.is-open .menu__nav a {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .menu__nav a:hover {
+    color: var(--color-accent-alt);
+  }
+
+  .menu__footer {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  @media (max-width: 720px) {
+    .primary-nav {
+      display: none;
+    }
+    .burger {
+      display: flex;
+    }
+    .site-header__top {
+      flex-wrap: wrap;
+      align-items: center;
+    }
+  }
 </style>
+
+<script>
+  const burger = document.querySelector<HTMLButtonElement>("[data-burger]");
+  const menu = document.querySelector<HTMLElement>("[data-menu]");
+
+  const setOpen = (open: boolean) => {
+    menu?.classList.toggle("is-open", open);
+    burger?.classList.toggle("is-open", open);
+    burger?.setAttribute("aria-expanded", String(open));
+    document.body.style.overflow = open ? "hidden" : "";
+  };
+
+  burger?.addEventListener("click", () => {
+    setOpen(!menu?.classList.contains("is-open"));
+  });
+
+  menu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+</script>
