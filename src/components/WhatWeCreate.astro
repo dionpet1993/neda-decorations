@@ -30,30 +30,34 @@ const items = [
 
 <style>
   .create {
-    max-width: var(--container-width);
-    padding: 2.5rem var(--gutter) 3.5rem;
+    max-width: 1400px;
+    padding: 4rem var(--gutter) 4.5rem;
   }
 
   .create__heading {
-    font-size: clamp(1.6rem, 5vw, 2rem);
-    margin-bottom: 1.5rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: 2rem;
   }
 
   .create__body {
-    font-size: 0.95rem;
-    line-height: 1.7;
+    max-width: 62rem;
+    font-size: clamp(1rem, 1.8vw, 1.35rem);
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
     color: var(--color-ink);
-    margin-bottom: 2rem;
     text-transform: uppercase;
+    text-align: justify;
+    margin-bottom: 3rem;
   }
 
   .create__intro {
-    font-size: 0.8rem;
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
     font-weight: 700;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--color-ink);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
   }
 
   .create__list {
@@ -64,14 +68,14 @@ const items = [
     grid-template-columns: 1fr 1fr;
     grid-auto-flow: column;
     grid-template-rows: repeat(2, auto);
-    column-gap: 2rem;
-    row-gap: 1rem;
-    font-size: 0.95rem;
+    column-gap: 3rem;
+    row-gap: 1.25rem;
+    font-size: clamp(1rem, 1.6vw, 1.3rem);
   }
 
   .create__list li {
     display: flex;
-    gap: 0.6rem;
+    gap: 0.9rem;
   }
 
   .create__n {
