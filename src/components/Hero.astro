@@ -3,7 +3,7 @@
 const heroImage = "/images/story-detail-1.webp";
 ---
 
-<section class="hero wrap">
+<section class="hero">
   <div class="hero__photo">
     <img src={heroImage} alt="" role="presentation" />
   </div>
@@ -20,8 +20,7 @@ const heroImage = "/images/story-detail-1.webp";
     grid-template-columns: 1fr 1fr;
     align-items: end;
     gap: 1.5rem;
-    padding-top: 1.5rem;
-    padding-bottom: 3rem;
+    padding: 1.5rem var(--gutter) 4rem;
   }
 
   .hero__photo img {
@@ -33,7 +32,7 @@ const heroImage = "/images/story-detail-1.webp";
 
   .hero__tagline {
     text-align: right;
-    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+    font-size: clamp(0.9rem, 1.8vw, 1.4rem);
     font-weight: 600;
     letter-spacing: 0.03em;
     text-transform: uppercase;
