@@ -2,7 +2,7 @@
 const categories = ["Event Design", "Space Styling", "Floral Design", "The Art of Bloom", "Artificial"];
 ---
 
-<ul class="category-strip wrap">
+<ul class="category-strip">
   {categories.map((c) => <li>{c}</li>)}
 </ul>
 
@@ -10,13 +10,14 @@ const categories = ["Event Design", "Space Styling", "Floral Design", "The Art o
   .category-strip {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem 2rem;
+    justify-content: space-between;
+    gap: 1rem 2rem;
     list-style: none;
     margin: 0;
-    padding-block: 2.5rem;
-    font-size: 0.75rem;
+    padding: 2.5rem var(--gutter);
+    font-size: clamp(0.95rem, 1.8vw, 1.3rem);
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--color-ink);
   }
