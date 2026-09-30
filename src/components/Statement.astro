@@ -1,34 +1,27 @@
 ---
-// TODO: swap for the real client photography.
-const photo = "/images/story-main.webp";
+const photo = "/images/story-flowers.webp";
 ---
 
 <section class="story">
   <div class="story__photo">
     <img src={photo} alt="" role="presentation" />
-    <h2 class="story__heading">
-      Every space<br />has a story.<br />We make it<br />unforgettable.
-    </h2>
   </div>
+  <h2 class="story__heading">
+    Every space<br />has a story.<br />We make it<br />unforgettable.
+  </h2>
 </section>
 
 <style>
-  .story__photo {
-    position: relative;
-  }
   .story__photo img {
     width: 100%;
-    height: clamp(360px, 60vw, 560px);
+    height: clamp(280px, 46vw, 460px);
     object-fit: cover;
   }
 
   .story__heading {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 1.5rem;
-    z-index: 1;
+    position: relative;
     margin: 0;
+    margin-top: clamp(-4rem, -8vw, -2.5rem);
     padding: 0 var(--gutter);
     color: var(--color-ink);
     font-size: clamp(2.1rem, 8.5vw, 3.5rem);
